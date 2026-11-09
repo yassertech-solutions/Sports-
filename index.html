@@ -1,0 +1,543 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050914">
+<title>YTS SCORE | YASSER TECH</title>
+
+<style>
+:root{
+  --bg:#050914;--panel:#0b1628;--blue:#008cff;
+  --cyan:#00eaff;--white:#effaff;--muted:#8ba2ba;
+  --line:#183b5b;--green:#28e6a2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--white);
+  font-family:Arial,sans-serif;min-height:100vh;
+  overflow-x:hidden
+}
+body:before{
+  content:"YASSER TECH   •   YASSER TECH   •   YASSER TECH   •   YASSER TECH";
+  position:fixed;z-index:-1;inset:-30%;
+  width:160%;height:160%;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  color:#00aaff0c;font-size:clamp(25px,5vw,65px);
+  font-weight:900;letter-spacing:8px;line-height:3;
+  transform:rotate(-22deg);
+  animation:brandMove 24s linear infinite;
+}
+@keyframes brandMove{
+  from{translate:0 0}
+  to{translate:-180px -100px}
+}
+body:after{
+  content:"";position:fixed;inset:0;z-index:-2;
+  pointer-events:none;
+  background:radial-gradient(circle at 10% 10%,#004c8030,transparent 35%),
+  radial-gradient(circle at 90% 90%,#004c8030,transparent 35%)
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1180px,94%);margin:auto}
+header{
+  border-bottom:1px solid var(--line);
+  padding:17px 0;display:flex;align-items:center;
+  justify-content:space-between;gap:12px
+}
+.logo{font-weight:900;letter-spacing:1px;font-size:20px}
+.logo span,.cyan{color:var(--cyan);text-shadow:0 0 12px #00cfff70}
+.tag{font-size:9px;color:var(--muted);letter-spacing:2px;margin-top:5px}
+.brandmark{font-size:13px;font-weight:900;color:var(--cyan)}
+.screen{display:none;padding:28px 0 45px}
+.screen.active{display:block}
+.panel{
+  background:#0b1628ed;border:1px solid var(--line);
+  border-radius:15px;padding:22px
+}
+.authbox{max-width:450px;margin:30px auto;border-color:#087fc5;
+  box-shadow:0 0 35px #008cff20}
+h1{font-size:clamp(26px,5vw,40px);margin:12px 0}
+p.sub{color:var(--muted);font-size:13px;line-height:1.6}
+.field{margin-top:15px}
+label{display:block;color:#a8c9e2;font-size:11px;margin-bottom:7px}
+input,select{
+  width:100%;padding:12px 13px;background:#050d1b;
+  border:1px solid #214563;border-radius:9px;color:white;outline:none
+}
+input:focus,select:focus{border-color:var(--cyan)}
+.btn{
+  border:0;border-radius:9px;padding:12px 16px;
+  background:linear-gradient(90deg,#008cff,#00eaff);
+  color:#00101b;font-weight:900
+}
+.btn.full{width:100%;margin-top:20px}
+.btn.secondary{
+  background:#10243a;color:var(--cyan);
+  border:1px solid #1d557c
+}
+.error{color:#ff7187;font-size:12px;margin-top:12px}
+.topbar{display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.hero{
+  border:1px solid #087fc5;border-radius:16px;padding:25px;
+  margin-bottom:20px;
+  background:linear-gradient(110deg,#092b49,#101a30 75%)
+}
+.hero h1{font-size:clamp(28px,6vw,46px)}
+.hero p{font-size:13px;color:#b4cde2}
+.nav{
+  display:flex;gap:8px;overflow-x:auto;padding:5px 0 15px;
+  margin-bottom:10px
+}
+.nav button{
+  flex:0 0 auto;background:#0b192b;color:#a9c8df;
+  border:1px solid var(--line);padding:10px 14px;border-radius:9px
+}
+.nav button.active{background:#06375a;color:var(--cyan);
+  border-color:var(--cyan)}
+.toolbar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:10px;margin:15px 0
+}
+.toolbar button{min-height:42px}
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px
+}
+.card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:16px
+}
+.card h3{font-size:14px;margin-bottom:8px}
+.muted{color:var(--muted);font-size:12px}
+.score{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin:15px 0;font-weight:800
+}
+.score .num{font-size:22px;color:var(--cyan)}
+.status{font-size:10px;color:var(--green);letter-spacing:1px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:500px;font-size:12px}
+th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line)}
+th{color:var(--cyan)}
+.resultbox{margin-top:15px}
+.article{padding:13px 0;border-bottom:1px solid var(--line)}
+.article a{color:var(--cyan);text-decoration:none;font-weight:bold;font-size:13px}
+.article a:hover{text-decoration:underline}
+.notice{padding:14px;background:#091a2b;border:1px solid var(--line);
+  border-radius:10px;color:var(--muted);font-size:12px;line-height:1.6}
+footer{
+  text-align:center;padding:25px 10px;border-top:1px solid var(--line);
+  color:#71869c;font-size:10px;letter-spacing:1px
+}
+@media(max-width:520px){
+  .panel{padding:17px}.hero{padding:20px}
+  .logo{font-size:16px}
+}
+</style>
+</head>
+
+<body>
+<header class="wrap">
+  <div>
+    <div class="logo">YASSER TECH <span>× YTS SCORE</span></div>
+    <div class="tag">POWERED BY YASSER TECH SOLUTIONS</div>
+  </div>
+  <div class="brandmark">[ YTS ]</div>
+</header>
+
+<main class="wrap">
+  <section id="welcome" class="screen active">
+    <div class="panel authbox">
+      <div class="cyan">⚽ YTS SCORE ACCESS</div>
+      <h1>WELCOME TO<br><span class="cyan">YTS SCORE</span></h1>
+      <p class="sub">Your football hub. Live scores, fixtures, leagues and more.</p>
+
+      <form id="registerForm">
+        <div class="field">
+          <label>USERNAME</label>
+          <input id="username" maxlength="40" required placeholder="Your username">
+        </div>
+        <div class="field">
+          <label>PHONE NUMBER</label>
+          <input id="phone" type="tel" maxlength="25" required placeholder="+255...">
+        </div>
+        <div class="field">
+          <label>EMAIL ADDRESS</label>
+          <input id="email" type="email" maxlength="100" required placeholder="Your email">
+        </div>
+        <div class="field">
+          <label>UNLOCK CODE</label>
+          <input id="unlockCode" type="password" required placeholder="Enter access code">
+        </div>
+        <button class="btn full" id="unlockBtn">UNLOCK YTS SCORE →</button>
+        <div id="registerError" class="error"></div>
+      </form>
+      <p class="muted" style="text-align:center;margin-top:20px">
+        SECURED ACCESS • YASSER TECH SOLUTIONS
+      </p>
+    </div>
+  </section>
+
+  <section id="dashboard" class="screen">
+    <div class="topbar">
+      <div>
+        <div class="cyan" style="font-weight:900">YASSER TECH // SPORTS NETWORK</div>
+        <p class="muted" style="margin-top:5px">Welcome, <b id="displayName"></b></p>
+      </div>
+      <button class="btn secondary" id="logoutBtn">LOGOUT</button>
+    </div>
+
+    <div class="hero">
+      <div class="cyan" style="font-size:11px;letter-spacing:2px">YTS SPORTS NETWORK</div>
+      <h1>FOOTBALL<br>WITHOUT LIMITS.</h1>
+      <p>Follow football action around the world with YTS SCORE.</p>
+    </div>
+
+    <nav class="nav" id="navigation">
+      <button class="active" data-page="live">🔴 Live Scores</button>
+      <button data-page="fixtures">📅 Fixtures</button>
+      <button data-page="standings">🏆 Standings</button>
+      <button data-page="teams">🛡️ Teams</button>
+      <button data-page="players">👤 Players</button>
+      <button data-page="match">⚽ Match Details</button>
+      <button data-page="news">📰 News</button>
+    </nav>
+
+    <div id="pageTitle" class="cyan" style="font-weight:900;margin:12px 0">
+      LIVE SCORES
+    </div>
+
+    <div id="filters" class="toolbar"></div>
+    <div id="content" class="resultbox">
+      <div class="notice">Loading YTS SCORE...</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="cyan" style="font-weight:900">YASSER TECH SOLUTIONS</div>
+  <p style="margin-top:8px">© 2026 YTS SCORE • ALL RIGHTS RESERVED</p>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const pages = {
+  live:{title:"LIVE SCORES",endpoint:"live"},
+  fixtures:{title:"FIXTURES",endpoint:"fixtures"},
+  standings:{title:"LEAGUE STANDINGS",endpoint:"standings"},
+  teams:{title:"TEAM SEARCH",endpoint:"teams"},
+  players:{title:"PLAYER SEARCH",endpoint:"players"},
+  match:{title:"MATCH DETAILS",endpoint:"match"},
+  news:{title:"FOOTBALL NEWS",endpoint:"news"}
+};
+
+let currentPage = "live";
+let currentUser = "YTS USER";
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+}
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function setDashboard(name){
+  currentUser = name || "YTS USER";
+  $("displayName").textContent = currentUser;
+  showScreen("dashboard");
+  loadPage("live");
+}
+
+$("registerForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  $("registerError").textContent = "Verifying access...";
+  $("unlockBtn").disabled = true;
+
+  try{
+    const response = await fetch("/api/unlock",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        username:$("username").value.trim(),
+        phone:$("phone").value.trim(),
+        email:$("email").value.trim(),
+        code:$("unlockCode").value
+      })
+    });
+    const data = await response.json();
+    if(!response.ok || !data.success) throw new Error(data.message || "Access denied");
+    setDashboard($("username").value.trim());
+  }catch(err){
+    $("registerError").textContent = err.message || "Connection error";
+  }finally{
+    $("unlockBtn").disabled = false;
+  }
+});
+
+async function checkSession(){
+  try{
+    const response = await fetch("/api/session");
+    const data = await response.json();
+    if(response.ok && data.success && data.username){
+      setDashboard(data.username);
+    }
+  }catch(e){
+    console.log("No active YTS session");
+  }
+}
+
+$("logoutBtn").addEventListener("click",async()=>{
+  try{await fetch("/api/logout",{method:"POST"});}catch(e){}
+  showScreen("welcome");
+  $("registerForm").reset();
+  $("registerError").textContent = "";
+});
+
+$("navigation").addEventListener("click",e=>{
+  const button = e.target.closest("button[data-page]");
+  if(!button)return;
+  document.querySelectorAll("#navigation button").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  loadPage(button.dataset.page);
+});
+
+function inputField(id,label,placeholder,type="text"){
+  return `<div><label>${label}</label><input id="${id}" type="${type}" placeholder="${placeholder}"></div>`;
+}
+function selectField(id,label,options){
+  return `<div><label>${label}</label><select id="${id}">${options}</select></div>`;
+}
+
+const leagues = `
+<option value="">Select league</option>
+<option value="39">Premier League</option>
+<option value="140">La Liga</option>
+<option value="135">Serie A</option>
+<option value="78">Bundesliga</option>
+<option value="61">Ligue 1</option>
+<option value="2">UEFA Champions League</option>
+<option value="3">UEFA Europa League</option>
+<option value="848">CAF Champions League</option>
+<option value=" africa">Other leagues: enter league ID below</option>`;
+
+function renderFilters(page){
+  if(page==="live") return `<div class="notice">Showing live matches from the API provider.</div>`;
+  if(page==="fixtures") return `
+    ${inputField("dateFilter","MATCH DATE","YYYY-MM-DD","date")}
+    ${inputField("teamFilter","TEAM ID (optional)","Enter team ID")}
+    <button class="btn" id="searchBtn">SEARCH FIXTURES</button>`;
+  if(page==="standings") return `
+    ${selectField("leagueFilter","SELECT LEAGUE",leagues)}
+    ${inputField("leagueCustom","OR LEAGUE ID","League ID")}
+    ${inputField("seasonFilter","SEASON","2026")}
+    <button class="btn" id="searchBtn">LOAD STANDINGS</button>`;
+  if(page==="teams") return `
+    ${inputField("teamSearch","TEAM NAME","e.g. Arsenal")}
+    ${inputField("teamId","TEAM ID (optional)","Team ID")}
+    ${inputField("teamSeason","SEASON","2026")}
+    <button class="btn" id="searchBtn">SEARCH TEAMS</button>`;
+  if(page==="players") return `
+    ${inputField("playerSearch","PLAYER NAME","e.g. Mbappe")}
+    ${inputField("playerTeam","TEAM ID (optional)","Team ID")}
+    ${inputField("playerSeason","SEASON","2026")}
+    <button class="btn" id="searchBtn">SEARCH PLAYERS</button>`;
+  if(page==="match") return `
+    ${inputField("matchId","FIXTURE ID","Enter fixture ID")}
+    <button class="btn" id="searchBtn">GET MATCH DETAILS</button>`;
+  return "";
+}
+
+function getValue(id){return $(id)?.value.trim() || "";}
+
+async function loadPage(page){
+  currentPage = page;
+  const config = pages[page];
+  $("pageTitle").textContent = config.title;
+  $("filters").innerHTML = renderFilters(page);
+  $("content").innerHTML = `<div class="notice">Loading ${esc(config.title)}...</div>`;
+
+  if(page==="news"){
+    await loadNews();
+    return;
+  }
+  if(page==="live"){
+    await fetchFootball("live",{live:"all"});
+    return;
+  }
+
+  if(page==="fixtures"){
+    $("dateFilter").value = new Date().toISOString().slice(0,10);
+  }
+  $("searchBtn").addEventListener("click",runSearch);
+}
+
+async function runSearch(){
+  const page = currentPage;
+  let params = {};
+
+  if(page==="fixtures"){
+    params.date = getValue("dateFilter");
+    if(getValue("teamFilter")) params.team = getValue("teamFilter");
+  }
+  if(page==="standings"){
+    params.league = getValue("leagueCustom") || getValue("leagueFilter");
+    params.season = getValue("seasonFilter") || "2026";
+    if(!params.league){
+      $("content").innerHTML = `<div class="notice">Please select a league first.</div>`;
+      return;
+    }
+  }
+  if(page==="teams"){
+    params.season = getValue("teamSeason") || "2026";
+    if(getValue("teamId")) params.id = getValue("teamId");
+    else if(getValue("teamSearch")) params.name = getValue("teamSearch");
+    else{
+      $("content").innerHTML = `<div class="notice">Enter a team name or ID.</div>`;
+      return;
+    }
+  }
+  if(page==="players"){
+    params.season = getValue("playerSeason") || "2026";
+    if(getValue("playerTeam")) params.team = getValue("playerTeam");
+    else if(getValue("playerSearch")) params.search = getValue("playerSearch");
+    else{
+      $("content").innerHTML = `<div class="notice">Enter a player name or team ID.</div>`;
+      return;
+    }
+  }
+  if(page==="match"){
+    params.id = getValue("matchId");
+    if(!params.id){
+      $("content").innerHTML = `<div class="notice">Enter a fixture ID.</div>`;
+      return;
+    }
+  }
+  await fetchFootball(page,params);
+}
+
+async function fetchFootball(endpoint,params={}){
+  $("content").innerHTML = `<div class="notice">Connecting to football data...</div>`;
+  try{
+    const query = new URLSearchParams({endpoint,...params});
+    const response = await fetch("/api/football?"+query.toString());
+    const data = await response.json();
+
+    if(!response.ok || !data.success){
+      throw new Error(data.message || "Unable to load football data.");
+    }
+    renderFootball(endpoint,data.response || []);
+  }catch(err){
+    $("content").innerHTML = `<div class="notice">${esc(err.message)}</div>`;
+  }
+}
+
+function renderFootball(type,items){
+  if(!Array.isArray(items) || items.length===0){
+    $("content").innerHTML = `<div class="notice">No results found. Try another date, league, team or season.</div>`;
+    return;
+  }
+
+  if(type==="live" || type==="fixtures" || type==="match"){
+    $("content").innerHTML = `<div class="grid">${
+      items.map(item=>{
+        const home=item.teams?.home || {};
+        const away=item.teams?.away || {};
+        const goals=item.goals || {};
+        const status=item.fixture?.status || {};
+        const league=item.league || {};
+        return `<div class="card">
+          <div class="muted">${esc(league.name)} • ${esc(league.country)}</div>
+          <div class="score">
+            <span>${esc(home.name || "Home")}</span>
+            <span class="num">${goals.home ?? "-"} : ${goals.away ?? "-"}</span>
+            <span>${esc(away.name || "Away")}</span>
+          </div>
+          <div class="status">${esc(status.long || "Scheduled")} ${status.elapsed ? "• "+esc(status.elapsed)+"′" : ""}</div>
+          <div class="muted" style="margin-top:9px">Fixture ID: ${esc(item.fixture?.id)}</div>
+          <div class="muted">${esc(item.fixture?.date || "")}</div>
+        </div>`;
+      }).join("")
+    }</div>`;
+    return;
+  }
+
+  if(type==="standings"){
+    const rows=items.flatMap(group=>group.league?.standings || []);
+    $("content").innerHTML = `<div class="tablewrap"><table>
+      <thead><tr><th>#</th><th>TEAM</th><th>MP</th><th>W</th><th>D</th><th>L</th><th>PTS</th></tr></thead>
+      <tbody>${rows.flat().map(row=>`<tr>
+        <td>${esc(row.rank)}</td><td>${esc(row.team?.name)}</td>
+        <td>${esc(row.all?.played)}</td><td>${esc(row.all?.win)}</td>
+        <td>${esc(row.all?.draw)}</td><td>${esc(row.all?.lose)}</td>
+        <td><b>${esc(row.points)}</b></td>
+      </tr>`).join("")}</tbody>
+    </table></div>`;
+    return;
+  }
+
+  if(type==="teams"){
+    $("content").innerHTML = `<div class="grid">${items.map(item=>`
+      <div class="card">
+        <h3>${esc(item.team?.name)}</h3>
+        <p class="muted">${esc(item.team?.country)} • ${esc(item.team?.founded || "")}</p>
+        <p class="muted">Team ID: ${esc(item.team?.id)}</p>
+        <p class="muted">${esc(item.venue?.name || "")}</p>
+      </div>`).join("")}</div>`;
+    return;
+  }
+
+  if(type==="players"){
+    $("content").innerHTML = `<div class="grid">${items.map(item=>`
+      <div class="card">
+        <h3>${esc(item.player?.name)}</h3>
+        <p class="muted">${esc(item.player?.nationality)}</p>
+        <p class="muted">Age: ${esc(item.player?.age)} • ID: ${esc(item.player?.id)}</p>
+        ${(item.statistics || []).slice(0,1).map(s=>`<p class="muted">${esc(s.team?.name || "")} • ${esc(s.games?.position || "")}</p>`).join("")}
+      </div>`).join("")}</div>`;
+    return;
+  }
+
+  $("content").innerHTML = `<div class="notice">Data received.</div>`;
+}
+
+async function loadNews(){
+  $("content").innerHTML = `<div class="notice">Loading football news...</div>`;
+  try{
+    const response=await fetch("/api/news");
+    const data=await response.json();
+    if(!response.ok || !data.success) throw new Error(data.message || "News unavailable.");
+    if(!data.articles?.length){
+      $("content").innerHTML=`<div class="notice">No news available right now.</div>`;
+      return;
+    }
+    $("content").innerHTML=`<div class="card">${
+      data.articles.map(article=>`
+        <div class="article">
+          <a href="${safeLink(article.link)}" target="_blank" rel="noopener noreferrer">${esc(article.title)}</a>
+          <div class="muted" style="margin-top:6px">${esc(article.source)}</div>
+        </div>`).join("")
+    }</div>`;
+  }catch(err){
+    $("content").innerHTML=`<div class="notice">${esc(err.message)}</div>`;
+  }
+}
+
+function safeLink(value){
+  try{
+    const url=new URL(value);
+    return url.protocol==="https:" ? esc(url.href) : "#";
+  }catch(e){return "#";}
+}
+
+checkSession();
+</script>
+</body>
+</html>
